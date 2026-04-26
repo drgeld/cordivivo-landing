@@ -1104,6 +1104,115 @@
   [data-reveal][data-delay="4"]{ transition-delay: .4s; }
   [data-reveal][data-delay="5"]{ transition-delay: .5s; }
 
+  /* ─── Mobile Responsive Fixes (phones ≤ 480px) ─── */
+  @media(max-width: 480px){
+    /* Hero */
+    .hero{ padding: 64px 0 32px; }
+    h1.headline{ font-size: clamp(32px, 8.5vw, 44px); margin: 16px 0 14px; }
+    .headline-row{ gap: 12px; }
+    .lede{ font-size: 16px; line-height: 1.5; margin-bottom: 20px; }
+    .hero-meta{ gap: 16px; margin-top: 24px; }
+    .hero-meta .m strong{ font-size: 20px; }
+    .hero-meta .m{ font-size: 12px; }
+
+    /* Nav */
+    .nav{ width: calc(100% - 16px); top: 8px; margin-top: 8px; }
+    .nav-inner{ padding: 8px 12px 8px 14px; }
+    .nav-cta{ padding: 8px 14px; font-size: 13px; }
+
+    /* Buttons */
+    .btn{ padding: 12px 16px; font-size: 14px; }
+    .cta-row{ gap: 8px; }
+
+    /* Section headings */
+    h2.sect{ font-size: clamp(28px, 7vw, 36px); }
+    .sect-lede{ font-size: 15px; }
+
+    /* Stat cards */
+    .stat-card .num{ font-size: 40px; }
+    .stat-card .num small{ font-size: 18px; }
+    .stat-card{ padding: 22px; }
+
+    /* Compliance ribbon */
+    .ribbon{ gap: 14px; padding: 16px 18px; flex-direction: column; align-items: flex-start; }
+    .ribbon .item{ font-size: 12.5px; }
+
+    /* Tri-pillar showcase */
+    .ts-tab{ padding: 16px 16px 14px; gap: 10px; }
+    .ts-tab-title{ white-space: normal; font-size: 13.5px; }
+    .ts-tab-num{ font-size: 18px; }
+    .ts-tab-tag{ font-size: 9px; }
+    .ts-body{ padding: 24px 18px 22px; }
+    .ts-title{ font-size: clamp(24px, 6vw, 32px); }
+    .ts-lede{ font-size: 14px; }
+    .ts-foot{ grid-template-columns: 1fr 1fr; gap: 10px; }
+    .ts-foot b{ font-size: 18px; }
+    .ts-foot span{ font-size: 8.5px; }
+
+    /* Plinth / foundation row */
+    .pm-plinth{ padding: 22px 18px 26px; }
+    .pm-found-ti{ font-size: 18px; }
+    .pm-found-su{ font-size: 11.5px; }
+
+    /* Algorithm engine */
+    .algo-block{ padding: 22px; margin-top: 64px; border-radius: 22px; }
+    .algo-title{ font-size: clamp(22px, 5.5vw, 30px); }
+    .algo-lede{ font-size: 14px; }
+    .algo-head{ margin-bottom: 32px; }
+
+    /* Founder */
+    .founder{ padding: 72px 0; }
+    .founder .name{ font-size: clamp(28px, 7vw, 40px); }
+    .founder p.bio{ font-size: 15px; }
+    .creds{ gap: 6px; }
+    .cred{ padding: 6px 10px; font-size: 12px; }
+
+    /* Roadmap */
+    .roadmap{ padding: 72px 0; }
+    .timeline{ margin-top: 36px; }
+    .tl-item h5{ font-size: 14.5px; }
+    .tl-item p{ font-size: 12.5px; }
+
+    /* Investor CTA */
+    .invest{ padding: 72px 0; }
+    .invest-card{ padding: 28px; border-radius: 22px; gap: 28px; }
+    .invest-card h2{ font-size: clamp(26px, 6.5vw, 36px); }
+    .invest-card p{ font-size: 14.5px; }
+    .form{ padding: 20px; border-radius: 16px; }
+    .form .row{ grid-template-columns: 1fr; }
+    .field input, .field select, .field textarea{ padding: 10px 12px; font-size: 14px; }
+    .form .submit{ width: 100%; justify-content: center; }
+
+    /* Footer */
+    .foot-grid{ grid-template-columns: 1fr; gap: 24px; }
+    .foot-bottom{ gap: 12px; }
+
+    /* Cookie banner */
+    .cookie-banner{ padding: 16px 18px; }
+    .cookie-text{ font-size: 12.5px; flex-basis: 100%; }
+    .cookie-actions{ width: 100%; }
+    .cookie-btn{ flex: 1; text-align: center; padding: 10px 14px; font-size: 12.5px; }
+
+    /* Sections general spacing */
+    section[id]{ scroll-margin-top: 56px; }
+  }
+
+  /* ─── Extra small phones (≤ 360px, e.g. Galaxy S8, iPhone SE1) ─── */
+  @media(max-width: 360px){
+    .wrap{ padding: 0 14px; }
+    h1.headline{ font-size: 28px; }
+    .hero-meta .m strong{ font-size: 18px; }
+    .stat-card .num{ font-size: 34px; }
+    .invest-card{ padding: 22px; }
+    .invest-card h2{ font-size: 24px; }
+    .ts-tab{ padding: 14px 12px 12px; }
+    .ts-tab-title{ font-size: 12.5px; }
+    .algo-block{ padding: 18px; }
+  }
+
+  /* ─── Prevent horizontal overflow globally ─── */
+  html, body{ overflow-x: hidden; }
+
   .ic{ width:20px; height:20px; stroke-width:1.6; }
 </style>
 </head>

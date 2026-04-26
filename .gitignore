@@ -1,0 +1,21 @@
+# Dependencies
+node_modules/
+
+# Design canvas (local dev only)
+design-canvas.jsx
+
+# Original variants (index.html is the deployed version)
+cordivivo-landing-light.html
+cordivivo-landing-dark.html
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+*.swp
+*.swo
+
+# Uploads (source images, not for deployment)
+uploads/

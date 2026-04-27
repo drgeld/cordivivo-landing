@@ -1698,21 +1698,6 @@
 </footer>
 
 <script>
-  // Simple form handler
-  const form = document.getElementById('contactForm');
-  if (form){
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const name = document.getElementById('cf-name').value.trim();
-      const email = document.getElementById('cf-email').value.trim();
-      if (!name || !email) {
-        form.querySelector('#cf-name').focus();
-        return;
-      }
-      form.classList.add('sent');
-    });
-  }
-
   // Smooth-scroll for in-page anchors
   document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', (e) => {

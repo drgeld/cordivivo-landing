@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>CordiVivo — Engine Explorer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{
+    scroll-behavior: auto;
+  }
+  body{
+    font-family:"Inter",ui-sans-serif,system-ui,sans-serif;
+    background:#07090f;
+    color:#f1f4f9;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  /* Scroll spacer — 7 layers × 100vh each */
+  .scroll-spacer{
+    height: 700vh;
+    position:relative;
+  }
+  /* Three.js canvas container */
+  #three-container{
+    position:fixed;
+    inset:0;
+    z-index:1;
+  }
+  /* Animations */
+  @keyframes fadeInUp{
+    from{opacity:0;transform:translateX(-50%) translateY(12px);}
+    to{opacity:1;transform:translateX(-50%) translateY(0);}
+  }
+  @keyframes bounceDown{
+    0%,100%{transform:translateY(0);}
+    50%{transform:translateY(6px);}
+  }
+  /* Selection */
+  ::selection{background:rgba(106,162,255,.3);}
+</style>
+</head>
+<body>
+
+<div id="three-container"></div>
+<div class="scroll-spacer"></div>
+<div id="overlay-root"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="engine-three.js"></script>
+<script>
+  initEngine(document.getElementById('three-container'));
+</script>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="engine-overlay.jsx"></script>
+<script type="text/babel">
+  const { EngineOverlay } = window;
+  ReactDOM.createRoot(document.getElementById('overlay-root')).render(<EngineOverlay />);
+</script>
+
+</body>
+</html>

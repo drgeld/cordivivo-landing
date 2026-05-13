@@ -189,8 +189,6 @@ function LiveTimestamp() {
 
 // ─── Layer node (for pipeline connection) ───
 function LayerNode({ color = C.brand, id = 'L0' }) {
-  const isMobile = useMobile();
-  if (isMobile) return null;
   return (
     <div style={{
       position: 'absolute', left: -44, top: '50%', transform: 'translateY(-50%)',
@@ -202,17 +200,6 @@ function LayerNode({ color = C.brand, id = 'L0' }) {
       zIndex: 5
     }}>{id}</div>);
 
-}
-
-function useSmall() {
-  const [m, setM] = React.useState(window.innerWidth <= 600);
-  React.useEffect(() => {
-    const mq = window.matchMedia('(max-width: 600px)');
-    const h = (e) => setM(e.matches);
-    mq.addEventListener('change', h);
-    return () => mq.removeEventListener('change', h);
-  }, []);
-  return m;
 }
 
 function Reveal({ children, delay = 0, direction = 'up', style = {} }) {
@@ -274,14 +261,13 @@ function VitalBar({ label, value, unit, pct, color, alert = false }) {
 // 3D tilt card
 function TiltCard({ children, accent = C.brand, style = {} }) {
   const mouse = useMouse();
-  const isSmall = useSmall();
-  const rx = isSmall ? 0 : mouse.y * -4;
-  const ry = isSmall ? 0 : mouse.x * 4;
+  const rx = mouse.y * -4;
+  const ry = mouse.x * 4;
   return (
     <div style={{
       background: C.card, backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)',
       border: `1px solid rgba(11,18,32,.06)`, borderLeft: `2px solid ${accent}`,
-      borderRadius: isSmall ? 16 : 20, padding: isSmall ? '20px 18px' : '32px 36px',
+      borderRadius: 20, padding: '32px 36px',
       boxShadow: `0 1px 2px rgba(11,18,32,.04), 0 8px 32px -12px rgba(11,18,32,.08), 0 0 0 0.5px rgba(11,18,32,.03)`,
       transform: `perspective(1200px) rotateX(${rx}deg) rotateY(${ry}deg)`,
       transition: 'transform .4s cubic-bezier(.16,1,.3,1), box-shadow .4s ease',
@@ -292,12 +278,11 @@ function TiltCard({ children, accent = C.brand, style = {} }) {
 
 // Full-width glass panel
 function WidePanel({ children, accent = C.brand, style = {} }) {
-  const isSmall = useSmall();
   return (
     <div style={{
       background: C.card, backdropFilter: 'blur(24px)',
       border: `1px solid ${C.line}`,
-      borderRadius: isSmall ? 18 : 24, padding: isSmall ? '24px 18px' : '40px 48px',
+      borderRadius: 24, padding: '40px 48px',
       boxShadow: `0 24px 60px -20px rgba(11,18,32,.10), 0 0 50px -20px ${accent}10`,
       width: '100%', maxWidth: 960,
       ...style
@@ -336,12 +321,10 @@ function LayerWatermark({ number = '0', color = C.brand }) {
 
 // ─── Section wrapper ───
 function Section({ children, id, bg, style = {} }) {
-  const isMobile = useMobile();
-  const isSmall = useSmall();
   return (
     <section id={id} data-section={id} style={{
-      minHeight: isSmall ? 'auto' : '80vh', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center',
-      padding: isSmall ? '48px 16px' : isMobile ? '56px 24px' : '60px 48px', overflow: 'hidden', background: bg || 'transparent', ...style
+      minHeight: '80vh', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center',
+      padding: '60px 48px', overflow: 'hidden', background: bg || 'transparent', ...style
     }}>
       {children}
     </section>);
@@ -402,11 +385,10 @@ function SceneOpening() {
 }
 
 function SceneIntro() {
-  const isMobile = useMobile();
   return (
     <Section id="intro" bg="radial-gradient(ellipse 80% 60% at 50% 40%, rgba(42,111,158,.06), transparent 70%)">
       <FloatingDots color={C.brand} count={8} />
-      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? 32 : 48, maxWidth: 1100, width: '100%', alignItems: 'center' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: window.innerWidth <= 900 ? '1fr' : '1fr 1fr', gap: window.innerWidth <= 900 ? 32 : 48, maxWidth: 1100, width: '100%', alignItems: 'center' }}>
         <div>
           <Reveal><Tag color={C.accent}>Medizinprodukt · Zertifizierbar</Tag></Reveal>
           <Reveal delay={0.12}>
@@ -470,11 +452,10 @@ function SceneOnboarding() {
 }
 
 function SceneRedFlags() {
-  const isMobile = useMobile();
   return (
     <Section id="L1" bg="radial-gradient(ellipse 50% 50% at 70% 40%, rgba(248,113,113,.06), transparent 70%)">
       <LayerWatermark number="1" color={C.red} />
-      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1.1fr 1fr', gap: isMobile ? 32 : 56, maxWidth: 1100, width: '100%', alignItems: 'center' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: window.innerWidth <= 900 ? '1fr' : '1.1fr 1fr', gap: window.innerWidth <= 900 ? 32 : 56, maxWidth: 1100, width: '100%', alignItems: 'center' }}>
         {/* Interactive red flags */}
         <Reveal>
           <InteractiveRedFlags />
@@ -521,12 +502,11 @@ function SceneConfirmation() {
 }
 
 function SceneDoseTracking() {
-  const isMobile = useMobile();
   return (
     <Section id="L3" bg="radial-gradient(ellipse 70% 50% at 60% 50%, rgba(46,143,130,.06), transparent 70%)">
       <LayerWatermark number="3" color={C.accent} />
       <FloatingDots color={C.accent} count={5} />
-      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1.2fr', gap: isMobile ? 32 : 56, maxWidth: 1100, width: '100%', alignItems: 'center' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: window.innerWidth <= 900 ? '1fr' : '1fr 1.2fr', gap: window.innerWidth <= 900 ? 32 : 56, maxWidth: 1100, width: '100%', alignItems: 'center' }}>
         <div>
           <Reveal><LayerBadge id="L3" color={C.accent} /></Reveal>
           <Reveal delay={0.1}><h2 style={{ fontFamily: SERIF, fontSize: 'clamp(30px, 3.8vw, 44px)', fontWeight: 400, letterSpacing: '-.01em', color: C.ink, margin: '14px 0 12px', lineHeight: 1.05 }}>Belastungscheck &amp; Nachverfolgung</h2></Reveal>
@@ -568,7 +548,6 @@ function SceneProgression() {
 }
 
 function ScenePsychMultimodal() {
-  const isMobile = useMobile();
   const pillars = [
   { name: 'Bewegung', sub: 'Kern', color: C.accent, size: 'large' },
   { name: 'Stress', sub: '2×/Wo', color: C.brand },
@@ -579,7 +558,7 @@ function ScenePsychMultimodal() {
   return (
     <Section id="L5L6" bg="radial-gradient(ellipse 50% 50% at 60% 40%, rgba(192,132,252,.05), transparent 70%)">
       <LayerWatermark number="5" color={C.purple} />
-      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1.2fr 1fr', gap: isMobile ? 32 : 56, maxWidth: 1100, width: '100%', alignItems: 'center' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: window.innerWidth <= 900 ? '1fr' : '1.2fr 1fr', gap: window.innerWidth <= 900 ? 32 : 56, maxWidth: 1100, width: '100%', alignItems: 'center' }}>
         <div>
           <Reveal><div style={{ display: 'flex', gap: 10 }}><LayerBadge id="L5" color={C.purple} /><LayerBadge id="L6" color={C.amber} /></div></Reveal>
           <Reveal delay={0.1}><h2 style={{ fontFamily: SERIF, fontSize: 'clamp(30px, 3.8vw, 44px)', fontWeight: 400, letterSpacing: '-.01em', color: C.ink, margin: '14px 0 12px', lineHeight: 1.05 }}>Psychologisches Monitoring &amp; 5 Therapie-Säulen</h2></Reveal>
@@ -651,7 +630,6 @@ function ScenePsychMultimodal() {
 }
 
 function SceneModes() {
-  const isMobile = useMobile();
   return (
     <Section id="modes" bg="radial-gradient(ellipse 60% 50% at 50% 50%, rgba(106,162,255,.05), transparent 70%)">
       <LayerWatermark number="⇌" color={C.brand} />
@@ -660,7 +638,7 @@ function SceneModes() {
           <Reveal><Tag color={C.brand}>Zwei Wege · Ein Algorithmus</Tag></Reveal>
           <Reveal delay={0.1}><h2 style={{ fontFamily: SERIF, fontSize: 'clamp(32px, 4vw, 48px)', fontWeight: 400, letterSpacing: '-.01em', color: C.ink, margin: '16px 0', lineHeight: 1.05 }}>Zwei Wege zum Patienten</h2></Reveal>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? 20 : 28 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: window.innerWidth <= 900 ? '1fr' : '1fr 1fr', gap: window.innerWidth <= 900 ? 20 : 28 }}>
           <Reveal>
             <TiltCard accent={C.brand} style={{ height: '100%' }}>
               <Tag color={C.brand}>Mode A · Klinik</Tag>
@@ -739,7 +717,7 @@ function SceneOutro() {
             <div style={{ display: 'flex', gap: 10, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 36 }}>
               <Tag color={C.brand}>Software-Sicherheit</Tag><Tag color={C.accent}>Risikomanagement</Tag><Tag color={C.purple}>Medizinprodukt</Tag><Tag color={C.amber}>Vollständig dokumentiert</Tag>
             </div>
-            <a href="/#invest" style={{
+            <a href="cordivivo-landing-dark-v2.html#invest" style={{
               display: 'inline-flex', alignItems: 'center', gap: 12,
               padding: '16px 32px', borderRadius: 999, background: '#1a2030', color: '#f7f6f3',
               fontFamily: FONT, fontSize: 16, fontWeight: 600, textDecoration: 'none',

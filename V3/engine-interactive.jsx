@@ -17,7 +17,7 @@ function EngineSlider({ value, onChange, min, max, step = 1, color, label, value
           borderRadius: 2, outline: 'none', cursor: 'pointer',
           accentColor: color,
         }} />
-      <style>{`input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:${color};border:3px solid ${C.bg};box-shadow:0 2px 8px rgba(0,0,0,.15);cursor:pointer;}input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:${color};border:3px solid ${C.bg};box-shadow:0 2px 8px rgba(0,0,0,.15);cursor:pointer;}`}</style>
+      <style>{`input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:${color};border:3px solid ${C.bg};box-shadow:0 2px 8px rgba(0,0,0,.15);cursor:pointer;}`}</style>
     </div>
   );
 }
@@ -327,7 +327,7 @@ function InteractiveConfirmation() {
         <DataLine label="Stufe" value="C · Woche 5" color={C.amber} />
       </TiltCard>
 
-      <div style={{ display: 'flex', gap: 10, justifyContent: 'center', flexWrap: 'wrap' }}>
+      <div style={{ display: 'flex', gap: 10, justifyContent: 'center' }}>
         {[
           { key: 'confirm', label: '✓ Bestätigen', color: C.accent },
           { key: 'adapt', label: '↓ Anpassen', color: C.amber },
@@ -335,7 +335,7 @@ function InteractiveConfirmation() {
         ].map(btn => (
           <button key={btn.key} onClick={() => setChoice(btn.key)} style={{
             padding: '12px 22px', borderRadius: 999, border: 'none', cursor: 'pointer',
-            fontFamily: FONT, fontSize: 14, fontWeight: 600, minHeight: 44,
+            fontFamily: FONT, fontSize: 14, fontWeight: 600,
             background: choice === btn.key ? btn.color : `${btn.color}08`,
             color: choice === btn.key ? '#fff' : btn.color,
             boxShadow: choice === btn.key ? `0 0 20px ${btn.color}30` : 'none',
@@ -373,7 +373,6 @@ function InteractiveConfirmation() {
 // L4: Click-through weeks with regression
 // ═══════════════════════════════════════
 function InteractiveProgression() {
-  const isSmall = useSmall();
   const [week, setWeek] = React.useState(1);
 
   const weekData = [
@@ -398,12 +397,11 @@ function InteractiveProgression() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16, width: '100%' }}>
       {/* Week selector */}
-      <div style={{ display: 'flex', gap: 6, justifyContent: 'center', flexWrap: 'wrap' }}>
+      <div style={{ display: 'flex', gap: 6, justifyContent: 'center' }}>
         {weekData.map((_, i) => (
           <button key={i} onClick={() => setWeek(i + 1)} style={{
             width: 40, height: 40, borderRadius: 10, border: 'none', cursor: 'pointer',
             fontFamily: MONO, fontSize: 13, fontWeight: 600,
-            minWidth: 40, minHeight: 44,
             background: week === i + 1 ? (weekData[i].status === 'spike' ? C.red : weekData[i].status === 'recovery' ? C.amber : C.accent) + '15' : 'rgba(0,0,0,.02)',
             color: week === i + 1 ? (weekData[i].status === 'spike' ? C.red : weekData[i].status === 'recovery' ? C.amber : C.accent) : C.muted,
             border: `1.5px solid ${week === i + 1 ? (weekData[i].status === 'spike' ? C.red : weekData[i].status === 'recovery' ? C.amber : C.accent) : C.line}`,
@@ -412,7 +410,7 @@ function InteractiveProgression() {
         ))}
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: isSmall ? '1fr' : '1fr 1fr', gap: isSmall ? 12 : 16 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
         {/* Bar chart */}
         <TiltCard accent={d.status === 'spike' ? C.red : d.status === 'recovery' ? C.amber : C.accent} style={{ transition: 'border-color .3s' }}>
           <div style={{ fontFamily: MONO, fontSize: 10, color: C.muted, letterSpacing: '.1em', marginBottom: 12 }}>TRAININGSDAUER · WOCHE 1–8</div>

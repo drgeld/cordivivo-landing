@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>CordiVivo — Adaptive Engine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="assets/hans-mueller.png">
+<link rel="preload" as="image" href="assets/hans-walking.png">
+<link rel="preload" as="image" href="assets/hans-running.png">
+<link rel="preload" as="image" href="assets/hans-garden.png">
+<link rel="preload" as="image" href="assets/hans-pingpong.png">
+<link rel="preload" as="image" href="assets/senior-vitality.png">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:auto;}
+body{
+  font-family:"Inter",system-ui,sans-serif;
+  background:#f0f3f8;color:#1a2030;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  overflow-x:hidden;
+}
+::selection{background:rgba(42,111,158,.2);}
+body::after{
+  content:"";position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:.018;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat:repeat;background-size:256px;
+}
+input[type=range]{-webkit-appearance:none;appearance:none;outline:none;cursor:pointer;background:transparent;}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:18px;height:18px;border-radius:50%;
+  background:var(--slider-c,#2a6f9e);border:none;
+  box-shadow:0 0 6px var(--slider-g,rgba(42,111,158,.25)),0 1px 4px rgba(0,0,0,.12);
+  cursor:pointer;margin-top:-7px;
+}
+input[type=range]::-webkit-slider-runnable-track{height:4px;border-radius:2px;}
+@keyframes liveBlink{0%,100%{opacity:1;}50%{opacity:.3;}}
+@keyframes heartbeatTrace{0%{stroke-dashoffset:2400;}100%{stroke-dashoffset:0;}}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+@keyframes pulseRing{0%{transform:scale(1);opacity:.6;}100%{transform:scale(2.5);opacity:0;}}
+@keyframes gradientShift{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
+.entrance-overlay{
+  position:fixed;inset:0;z-index:100000;background:#f0f3f8;
+  display:flex;align-items:center;justify-content:center;
+  opacity:1;transition:opacity .8s ease .2s;pointer-events:none;
+}
+.entrance-overlay.done{opacity:0;}
+.entrance-logo{height:44px;width:auto;opacity:0;animation:fadeInUp .8s ease .3s forwards;}
+@media(max-width:900px){
+  .cv-section{padding-left:20px!important;padding-right:20px!important;}
+}
+</style>
+</head>
+<body>
+<div class="entrance-overlay" id="entrance">
+  <img class="entrance-logo" src="assets/cordivivo-logo.png" alt="CordiVivo" />
+</div>
+<div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="engine-v3-core.jsx"></script>
+<script type="text/babel" src="engine-v3-widgets.jsx"></script>
+<script type="text/babel" src="engine-v3-scenes-1.jsx"></script>
+<script type="text/babel" src="engine-v3-scenes-2.jsx"></script>
+<script type="text/babel">
+  ReactDOM.createRoot(document.getElementById('root')).render(<window.EngineV3App />);
+</script>
+<script>
+  setTimeout(function(){
+    var el=document.getElementById('entrance');
+    if(el)el.classList.add('done');
+    setTimeout(function(){if(el)el.style.display='none';},1000);
+  },1600);
+</script>
+</body>
+</html>

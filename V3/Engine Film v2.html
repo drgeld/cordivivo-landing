@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>CordiVivo — Engine Deep Dive v2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:auto;}
+  body{
+    font-family:"Inter",ui-sans-serif,system-ui,sans-serif;
+    background:#f7f6f3;color:#1a2233;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+
+  /* Entrance animation */
+  .entrance-overlay{
+    position:fixed;inset:0;z-index:100000;
+    background:#f7f6f3;
+    display:flex;align-items:center;justify-content:center;
+    opacity:1;transition:opacity .6s ease .2s;
+    pointer-events:none;
+  }
+  .entrance-overlay.done{opacity:0;}
+  .entrance-logo{
+    height:72px;width:auto;
+    opacity:0;transform:translateY(8px);
+    animation:entranceFade 1s ease .2s forwards;
+  }
+  @keyframes entranceFade{
+    0%{opacity:0;transform:translateY(8px);}
+    40%{opacity:1;transform:translateY(0);}
+    75%{opacity:1;transform:translateY(0);}
+    100%{opacity:0;transform:translateY(-4px);}
+  }
+  /* Subtle grain overlay */
+  body::after{
+    content:"";position:fixed;inset:0;z-index:9999;pointer-events:none;
+    opacity:.028;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-repeat:repeat;background-size:256px;
+  }
+  ::selection{background:rgba(42,111,158,.2);}
+
+  /* Animated entry */
+  .reveal{
+    opacity:0;transform:translateY(36px);
+    transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1);
+  }
+  .reveal.vis{opacity:1;transform:translateY(0);}
+
+  @keyframes bob{0%,100%{transform:translateY(0);}50%{transform:translateY(5px);}}
+  @keyframes floatDot{0%,100%{transform:translate(0,0);opacity:.12;}25%{transform:translate(8px,-12px);opacity:.2;}50%{transform:translate(-4px,-20px);opacity:.08;}75%{transform:translate(12px,-8px);opacity:.18;}}
+  @keyframes pulseV{0%{top:-20px;opacity:0;}30%{opacity:1;}70%{opacity:1;}100%{top:100%;opacity:0;}}
+  @keyframes pulseH{0%{left:-20px;opacity:0;}30%{opacity:1;}70%{opacity:1;}100%{left:100%;opacity:0;}}
+  @keyframes shimmer{0%{background-position:-200% 0;}100%{background-position:200% 0;}}
+  @keyframes liveBlink{0%,100%{opacity:1;}50%{opacity:.3;}}
+  @keyframes flowDown{0%{top:-8px;opacity:0;}20%{opacity:1;}80%{opacity:1;}100%{top:calc(100% + 8px);opacity:0;}}
+  @keyframes processSweep{0%{left:-30%;}100%{left:100%;}}
+  @keyframes tickPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.02);}}
+
+  /* Top bar */
+  .top-bar{
+    position:fixed;top:0;left:0;right:0;z-index:40;
+    padding:14px 24px;display:flex;justify-content:space-between;align-items:center;
+    background:rgba(247,246,243,.88);backdrop-filter:blur(16px);
+    border-bottom:1px solid rgba(11,18,32,.08);
+  }
+  .top-bar a{color:#6b7a90;text-decoration:none;font-size:14px;display:flex;align-items:center;gap:8px;}
+  .top-bar a:hover{color:#1a2233;}
+  .top-bar-id{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.1em;color:#6b7a90;}
+  .top-bar-layer{font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:600;transition:color .4s;}
+
+  /* Scroll hint */
+  .scroll-hint{
+    position:fixed;bottom:28px;left:30%;transform:translateX(-50%);
+    display:flex;flex-direction:column;align-items:center;gap:6px;
+    color:rgba(11,18,32,.35);font-family:"JetBrains Mono",monospace;font-size:11px;
+    z-index:40;transition:opacity .6s;pointer-events:none;
+  }
+  .scroll-hint svg{animation:bob 2s infinite;}
+
+  /* Mobile: full-width sections */
+  @media(max-width:900px){
+    .scene-section{padding:60px 24px;}
+    .scene-section + .scene-section::before{left:5%;right:5%;}
+  }
+  @media(max-width:600px){
+    .scene-section{padding:48px 16px;}
+  }
+
+  /* Split image crossfade — simple and clean */
+  .split-img { position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 20%; }
+  @keyframes splitFadeIn { from { opacity:0; } to { opacity:1; } }
+  .split-layer-active { animation: splitFadeIn .4s ease forwards; }
+  .split-layer-active.instant { animation: none; opacity: 1; }
+  /* Soft edge blend between content and image panel */
+  .split-panel-edge {
+    position:absolute;left:-40px;top:0;bottom:0;width:40px;z-index:5;
+    background:linear-gradient(to right, #f7f6f3, transparent);
+    pointer-events:none;
+  }
+
+  /* Slider thumb */
+  input[type=range]{-webkit-appearance:none;appearance:none;outline:none;cursor:pointer;}
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none;width:18px;height:18px;border-radius:50%;
+    background:#2a6f9e;border:3px solid #f7f6f3;
+    box-shadow:0 2px 8px rgba(0,0,0,.15);cursor:pointer;
+  }
+</style>
+</head>
+<body>
+
+<!-- Entrance -->
+<div class="entrance-overlay" id="entrance">
+  <img class="entrance-logo" src="assets/cordivivo-logo.png" alt="CordiVivo" />
+</div>
+
+<div class="top-bar">
+  <a href="cordivivo-landing-dark-v2.html">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Zurück
+  </a>
+  <img src="assets/cordivivo-logo.png" alt="CordiVivo" style="height:22px;width:auto;opacity:.45;" />
+  <span class="top-bar-id">Adaptive Engine</span>
+  <span class="top-bar-layer" id="layerLabel"></span>
+</div>
+
+<div class="scroll-hint" id="scrollHint">
+  <span>Scrollen</span>
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 9l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</div>
+
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<!-- Base components (shared constants, hooks, UI primitives) -->
+<script type="text/babel" src="engine-film-scroll.jsx"></script>
+<!-- Interactive elements -->
+<script type="text/babel" src="engine-interactive.jsx"></script>
+<!-- Split panel + helpers -->
+<script type="text/babel" src="engine-split-panel.jsx"></script>
+<!-- Split scenes + main app -->
+<script type="text/babel" src="engine-split-scenes.jsx"></script>
+<script type="text/babel">
+  ReactDOM.createRoot(document.getElementById('root')).render(<window.EngineSplitApp />);
+</script>
+<script>
+  // Entrance animation
+  setTimeout(function(){ 
+    var el = document.getElementById('entrance');
+    if(el) el.classList.add('done');
+    setTimeout(function(){ if(el) el.style.display='none'; }, 800);
+  }, 1400);
+</script>
+</body>
+</html>

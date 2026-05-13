@@ -8,7 +8,7 @@ const C = {
   purple: '#5c6fa0', amber: '#8a7040', line: 'rgba(11,18,32,.07)'
 };
 const FONT = '"Space Grotesk", "Inter", system-ui, sans-serif';
-const SERIF = '"Playfair Display", Georgia, serif';
+const SERIF = FONT; // professionalize: drop editorial serif, use sans throughout for clinical register
 const MONO = '"JetBrains Mono", "SF Mono", monospace';
 
 // ─── Mobile responsive helper ───
@@ -68,46 +68,19 @@ function useCounter(target, duration = 1200, decimals = 0) {
   return [val, ref];
 }
 
-// ─── Floating particle dots (ambient) ───
-function FloatingDots({ color = C.brand, count = 6 }) {
-  const dots = React.useMemo(() => Array.from({ length: count }, (_, i) => ({
-    x: 10 + Math.random() * 80,
-    y: 10 + Math.random() * 80,
-    size: 3 + Math.random() * 4,
-    dur: 4 + Math.random() * 6,
-    delay: Math.random() * -8
-  })), [count]);
-  return (
-    <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden' }}>
-      {dots.map((d, i) =>
-      <div key={i} style={{
-        position: 'absolute', left: `${d.x}%`, top: `${d.y}%`,
-        width: d.size, height: d.size, borderRadius: '50%',
-        background: color, opacity: 0.15,
-        animation: `floatDot ${d.dur}s ease-in-out ${d.delay}s infinite`
-      }}></div>
-      )}
-    </div>);
+// ─── Floating particle dots — disabled for clinical register ───
+function FloatingDots() { return null; }
 
-}
-
-// ─── Animated connection line ───
+// ─── Animated connection line — replaced with static rule for calmer register ───
 function PulseLine({ color = C.brand, vertical = true }) {
   return (
     <div style={{
-      width: vertical ? 2 : '100%', height: vertical ? 40 : 2,
-      background: `linear-gradient(${vertical ? '180deg' : '90deg'}, transparent, ${color}40, transparent)`,
-      position: 'relative', overflow: 'hidden',
+      width: vertical ? 1 : '100%', height: vertical ? 32 : 1,
+      background: vertical
+        ? `linear-gradient(180deg, transparent, ${color}30, transparent)`
+        : `linear-gradient(90deg, transparent, ${color}30, transparent)`,
       margin: vertical ? '0 auto' : '0'
-    }}>
-      <div style={{
-        position: 'absolute',
-        width: vertical ? 2 : 20, height: vertical ? 20 : 2,
-        background: color, borderRadius: 2,
-        animation: `pulse${vertical ? 'V' : 'H'} 2s ease-in-out infinite`
-      }}></div>
-    </div>);
-
+    }}></div>);
 }
 // ─── Animated number display ───
 function AnimNum({ target, decimals = 0, color = C.brand, unit = '' }) {
@@ -170,21 +143,12 @@ function StatusStamp({ status = 'ok', label }) {
 
 }
 
-// ─── Ticking timestamp ───
+// ─── Ticking timestamp — disabled (live tickers read marketing, not medical) ───
 function LiveTimestamp() {
-  const [t, setT] = React.useState(new Date());
-  React.useEffect(() => {
-    const i = setInterval(() => setT(new Date()), 1000);
-    return () => clearInterval(i);
-  }, []);
-  const h = String(t.getHours()).padStart(2, '0');
-  const m = String(t.getMinutes()).padStart(2, '0');
-  const s = String(t.getSeconds()).padStart(2, '0');
   return (
     <span style={{ fontFamily: MONO, fontSize: 11, color: C.muted, letterSpacing: '.06em' }}>
-      {h}:{m}:<span style={{ color: C.brand }}>{s}</span>
+      Sitzungs‑Log
     </span>);
-
 }
 
 // ─── Layer node (for pipeline connection) ───
@@ -393,7 +357,7 @@ function SceneOpening() {
         </Reveal>
         <Reveal delay={0.6}>
           <p style={{ fontFamily: SERIF, fontSize: 'clamp(28px, 4vw, 44px)', fontWeight: 400, color: C.brand, lineHeight: 1.3, letterSpacing: '-.01em' }}>
-            Bis jetzt.
+            CordiVivo setzt auf eine auditierbare, deterministische Therapie‑Engine.
           </p>
         </Reveal>
       </div>

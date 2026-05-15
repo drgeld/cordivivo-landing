@@ -4,6 +4,9 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>CordiVivo — Adaptive Engine · Cinematic</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="icon" type="image/png" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/favicon.png">
 <meta name="description" content="Erleben Sie die CordiVivo Adaptive Engine: 7 deterministische Sicherheitsschichten für die kardiologische Tele-Rehabilitations-Nachsorge. Auditierbar, evidenzbasiert, MDR Klasse IIa zertifizierbar." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,7 +16,7 @@
   html{scroll-behavior:auto;}
   body{
     font-family:"Inter",ui-sans-serif,system-ui,sans-serif;
-    background:#f7f6f3;color:#1a2233;
+    background:#f0f3f8;color:#1a2233;
     -webkit-font-smoothing:antialiased;
     overflow-x:hidden;
   }
@@ -21,7 +24,7 @@
   /* Entrance animation */
   .entrance-overlay{
     position:fixed;inset:0;z-index:100000;
-    background:#f7f6f3;
+    background:#f0f3f8;
     display:flex;align-items:center;justify-content:center;
     opacity:1;transition:opacity .6s ease .2s;
     pointer-events:none;
@@ -50,12 +53,12 @@
   ::selection{background:rgba(42,111,158,.2);}
 
   .scene-section{
-    min-height:84vh;
+    min-height:70vh;
     position:relative;
     display:flex;
     align-items:center;
     justify-content:center;
-    padding:80px 56px;
+    padding:56px 56px;
     overflow:hidden;
   }
   .scene-section + .scene-section::before{
@@ -63,11 +66,11 @@
     height:1px;background:linear-gradient(90deg,transparent,rgba(11,18,32,.08),transparent);
   }
   @media(max-width:900px){
-    .scene-section{padding:60px 24px;}
+    .scene-section{padding:44px 24px;}
     .scene-section + .scene-section::before{left:5%;right:5%;}
   }
   @media(max-width:600px){
-    .scene-section{padding:48px 16px;min-height:auto;}
+    .scene-section{padding:36px 16px;min-height:auto;}
   }
 
   /* Animated entry */
@@ -113,7 +116,7 @@
   .top-bar{
     position:fixed;top:0;left:0;right:0;z-index:40;
     padding:14px 24px;display:flex;justify-content:space-between;align-items:center;
-    background:rgba(247,246,243,.88);backdrop-filter:blur(16px);
+    background:rgba(240,243,248,.88);backdrop-filter:blur(16px);
     border-bottom:1px solid rgba(11,18,32,.08);
   }
   .top-bar a{color:#6b7a90;text-decoration:none;font-size:14px;display:flex;align-items:center;gap:8px;transition:color .2s;}

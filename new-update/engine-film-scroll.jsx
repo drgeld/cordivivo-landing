@@ -2,7 +2,7 @@
 // Patient: Hans Müller, 62, NYHA II, KHK, post-CABG, 6MWT 380m
 
 const C = {
-  bg: '#f7f6f3', surface: '#efeee9', card: 'rgba(255,255,255,.94)',
+  bg: '#f0f3f8', surface: '#eef1ec', card: 'rgba(255,255,255,.94)',
   ink: '#1a2030', ink2: '#3a4560', muted: '#7a8698',
   brand: '#2a6f9e', accent: '#2e8f82', red: '#b84040',
   purple: '#5c6fa0', amber: '#8a7040', line: 'rgba(11,18,32,.07)'
@@ -290,9 +290,9 @@ function HeroImage({ src, alt, overlay = 'rgba(7,9,15,.5)', children, style = {}
 function LayerWatermark({ number = '0', color = C.brand }) {
   return (
     <div style={{
-      position: 'absolute', right: '-2%', top: '50%', transform: 'translateY(-50%)',
-      fontFamily: SERIF, fontSize: 'clamp(200px, 28vw, 360px)', fontWeight: 400,
-      color, opacity: 0.03, lineHeight: 1, pointerEvents: 'none',
+      position: 'absolute', right: '-5%', top: '50%', transform: 'translateY(-50%)',
+      fontFamily: SERIF, fontSize: 'clamp(200px, 30vw, 400px)', fontWeight: 800,
+      color, opacity: 0.04, lineHeight: 1, pointerEvents: 'none',
       userSelect: 'none', zIndex: 0
     }}>{number}</div>);
 
@@ -304,8 +304,8 @@ function Section({ children, id, bg, style = {} }) {
   const isSmall = useSmall();
   return (
     <section id={id} data-section={id} style={{
-      minHeight: isSmall ? 'auto' : '80vh', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center',
-      padding: isSmall ? '48px 16px' : isMobile ? '56px 24px' : '60px 48px', overflow: 'hidden', background: bg || 'transparent', ...style
+      minHeight: isSmall ? 'auto' : '68vh', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center',
+      padding: isSmall ? '36px 16px' : isMobile ? '44px 24px' : '48px 48px', overflow: 'hidden', background: bg || 'transparent', ...style
     }}>
       {children}
     </section>);

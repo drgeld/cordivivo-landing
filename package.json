@@ -1,5 +1,14 @@
 {
+  "scripts": {
+    "build": "babel new-update/engine-film-scroll.jsx -o new-update/engine-film-scroll.js --presets=@babel/preset-react && babel new-update/engine-interactive.jsx -o new-update/engine-interactive.js --presets=@babel/preset-react"
+  },
   "dependencies": {
     "framer-motion": "^12.38.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.24.0",
+    "@babel/core": "^7.24.0",
+    "@babel/preset-react": "^7.24.0"
   }
 }
+
